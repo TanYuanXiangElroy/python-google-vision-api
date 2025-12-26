@@ -1,0 +1,5 @@
+test_pic/
+my-google-cloud-key.json
+venv/  
+*.log 
+__pycache__/
