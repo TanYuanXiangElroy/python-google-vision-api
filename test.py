@@ -22,10 +22,15 @@ for image_name in image_files:
         
         if response.status_code == 200:
             data = response.json()
-            print(f"Best Guess: {data.get('best_guess')}")
-            # Print top 3 labels
-            top_3 = [item['description'] for item in data.get('google_sees', [])[:3]]
-            print(f"Tags: {top_3}")
+            best_guesses = data.get('best_guesses', [])
+            if best_guesses:
+                print(f"Best Guesses: {', '.join(best_guesses[:5])}")
+            else:
+                 print(f"Best Guess: {data.get('best_guess', 'N/A')}")
+
+            # Print top 5 labels
+            top_5 = [item['description'] for item in data.get('google_sees', [])[:5]]
+            print(f"Tags: {top_5}")
         else:
             print(f"Error: {response.status_code} - {response.text}")
             

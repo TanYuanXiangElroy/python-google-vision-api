@@ -42,7 +42,7 @@ def scan_image():
 
         return jsonify({
             "success": True,
-            "best_guess": response.web_detection.best_guess_labels[0].label if response.web_detection.best_guess_labels else "N/A",
+            "best_guesses": [label.label for label in response.web_detection.best_guess_labels],
             "google_sees": results
         })
 
