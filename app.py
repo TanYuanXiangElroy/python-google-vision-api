@@ -1,3 +1,4 @@
+#app.py
 import streamlit as st
 import requests
 from PIL import Image
@@ -6,10 +7,10 @@ import io
 # backend URL
 API_URL = "http://localhost:5000/scan"
 
-st.set_page_config(page_title="Poke-Dex Vision", page_icon="🔍")
+st.set_page_config(page_title="Poke-Dex Vision (SerpApi)", page_icon="🔍", layout="wide")
 
-st.title("🔍 Google Vision Image Search")
-st.write("Identify objects using Google Cloud Vision API")
+st.title("🔍 Google Lens Image Search")
+st.write("Identify objects using SerpApi (Google Lens)")
 
 # Create tabs for different input methods
 tab1, tab2 = st.tabs(["📸 Take Photo", "📂 Upload Image"])
@@ -29,10 +30,9 @@ with tab2:
 
 if image_file is not None:
     if st.button("🔍 Analyze Image", type="primary"):
-        with st.spinner("Analyzing..."):
+        with st.spinner("Analyzing with Google Lens..."):
             try:
                 # Prepare the file for the request
-                # Streamlit file objects act like open files
                 files = {"image": image_file.getvalue()}
                 
                 response = requests.post(API_URL, files=files)
@@ -40,29 +40,34 @@ if image_file is not None:
                 if response.status_code == 200:
                     data = response.json()
                     
-                    # Display Results
                     st.success("Analysis Complete!")
                     
-                    col1, col2 = st.columns(2)
+                    # 1. Knowledge Graph (Best Guess)
+                    st.subheader("🏆 Best Match (Knowledge Graph)")
+                    best_guesses = data.get("best_guesses", [])
+                    if best_guesses:
+                        for guess in best_guesses:
+                            st.markdown(f"### **{guess}**")
+                    else:
+                        st.write("No direct knowledge graph match found.")
                     
-                    with col1:
-                        st.subheader("🏆 Best Guesses")
-                        best_guesses = data.get("best_guesses", [])
-                        if best_guesses:
-                            for guess in best_guesses[:5]:
-                                st.write(f"- **{guess}**")
-                        else:
-                            # Fallback for older server version or empty list
-                            st.write(f"- {data.get('best_guess', 'N/A')}")
-                            
-                    with col2:
-                        st.subheader("🏷️ Tags (Web Entities)")
-                        google_sees = data.get("google_sees", [])
-                        if google_sees:
-                            for item in google_sees[:10]:
-                                st.write(f"- {item['description']} ({item['score']})")
-                        else:
-                            st.write("No tags found.")
+                    st.divider()
+
+                    # 2. Visual Matches
+                    st.subheader("🖼️ Visual Matches")
+                    visual_matches = data.get("visual_matches", [])
+                    
+                    if visual_matches:
+                        # Create a grid layout
+                        cols = st.columns(3)
+                        for idx, match in enumerate(visual_matches):
+                            with cols[idx % 3]:
+                                if match.get('thumbnail'):
+                                    st.image(match['thumbnail'], use_column_width=True)
+                                st.markdown(f"**[{match.get('title', 'No Title')}]({match.get('link', '#')})**")
+                                st.caption(f"Source: {match.get('source', 'Unknown')}")
+                    else:
+                        st.write("No visual matches found.")
                             
                 else:
                     st.error(f"Error: {response.status_code} - {response.text}")

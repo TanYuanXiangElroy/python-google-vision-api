@@ -5,7 +5,7 @@ my-google-cloud-key.json
 venv/
 __pycache__/
 .DS_Store
-
+.env
 
 # Logs
 *.log

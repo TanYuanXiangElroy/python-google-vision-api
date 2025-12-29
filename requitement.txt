@@ -2,3 +2,5 @@ flask
 google-cloud-vision
 streamlit
 requests
+google-search-results
+python-dotenv
