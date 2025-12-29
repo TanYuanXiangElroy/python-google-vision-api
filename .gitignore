@@ -1,5 +1,14 @@
-test_pic/
+# Credentials 
 my-google-cloud-key.json
-venv/  
-*.log 
+
+# System / Environment
+venv/
 __pycache__/
+.DS_Store
+
+
+# Logs
+*.log
+
+# Test Images
+test_pic/

@@ -1,3 +1,4 @@
+#test.py
 import os
 import requests
 
@@ -9,7 +10,7 @@ if not os.path.exists(image_dir):
     exit()
 
 # Get all valid image files
-image_files = [f for f in os.listdir(image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+image_files = ['test_char.jpg']
 image_files.sort()
 
 for image_name in image_files:
@@ -31,6 +32,13 @@ for image_name in image_files:
             # Print top 5 labels
             top_5 = [item['description'] for item in data.get('google_sees', [])[:5]]
             print(f"Tags: {top_5}")
+
+            # Print top 3 matching pages
+            matching_pages = data.get('matching_pages', [])
+            if matching_pages:
+                print("Matching Pages:")
+                for page in matching_pages[:3]:
+                    print(f" - {page.get('page_title')}")
         else:
             print(f"Error: {response.status_code} - {response.text}")
             
