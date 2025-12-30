@@ -9,6 +9,8 @@ __pycache__/
 
 # Logs
 *.log
+*.json 
+# this is for the serpai api response json logs
 
 # Test Images
 test_pic/

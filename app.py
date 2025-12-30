@@ -42,32 +42,46 @@ if image_file is not None:
                     
                     st.success("Analysis Complete!")
                     
-                    # 1. Knowledge Graph (Best Guess)
-                    st.subheader("🏆 Best Match (Knowledge Graph)")
-                    best_guesses = data.get("best_guesses", [])
-                    if best_guesses:
-                        for guess in best_guesses:
-                            st.markdown(f"### **{guess}**")
-                    else:
-                        st.write("No direct knowledge graph match found.")
+                    # Create columns for layout
+                    col1, col2 = st.columns([1, 2])
                     
-                    st.divider()
+                    with col1:
+                        # 1. Knowledge Graph (Best Guess)
+                        st.subheader("🏆 Best Match")
+                        best_guesses = data.get("best_guesses", [])
+                        if best_guesses:
+                            for guess in best_guesses:
+                                st.markdown(f"### **{guess}**")
+                        else:
+                            st.write("No direct knowledge graph match found.")
 
-                    # 2. Visual Matches
-                    st.subheader("🖼️ Visual Matches")
-                    visual_matches = data.get("visual_matches", [])
-                    
-                    if visual_matches:
-                        # Create a grid layout
-                        cols = st.columns(3)
-                        for idx, match in enumerate(visual_matches):
-                            with cols[idx % 3]:
-                                if match.get('thumbnail'):
-                                    st.image(match['thumbnail'], use_column_width=True)
-                                st.markdown(f"**[{match.get('title', 'No Title')}]({match.get('link', '#')})**")
-                                st.caption(f"Source: {match.get('source', 'Unknown')}")
-                    else:
-                        st.write("No visual matches found.")
+                        st.divider()
+
+                        # 3. Common Keywords (Top Words)
+                        st.subheader("📊 Top Keywords")
+                        common_keywords = data.get("common_keywords", [])
+                        if common_keywords:
+                            for item in common_keywords:
+                                st.write(f"- **{item['word']}**: {item['count']}")
+                        else:
+                            st.write("No common keywords found.")
+
+                    with col2:
+                        # 2. Visual Matches
+                        st.subheader("🖼️ Visual Matches")
+                        visual_matches = data.get("visual_matches", [])
+                        
+                        if visual_matches:
+                            # Create a grid layout inside this column
+                            grid_cols = st.columns(3)
+                            for idx, match in enumerate(visual_matches):
+                                with grid_cols[idx % 3]:
+                                    if match.get('thumbnail'):
+                                        st.image(match['thumbnail'], use_column_width=True)
+                                    st.markdown(f"**[{match.get('title', 'No Title')}]({match.get('link', '#')})**")
+                                    st.caption(f"Source: {match.get('source', 'Unknown')}")
+                        else:
+                            st.write("No visual matches found.")
                             
                 else:
                     st.error(f"Error: {response.status_code} - {response.text}")
