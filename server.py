@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 # Import our distinct logic modules
 from methods.google_cloud import analyze_with_google_cloud
 from methods.serpapi import analyze_with_serpapi
+from methods.selenium_lens import analyze_with_selenium
 
 load_dotenv()
 
@@ -31,7 +32,10 @@ def scan_image():
             if not SERPAPI_KEY or not IMGBB_KEY:
                 return jsonify({"error": "Missing API Keys for SerpApi method"}), 500
             result = analyze_with_serpapi(image_bytes, SERPAPI_KEY, IMGBB_KEY)
-        
+        elif method == 'selenium':
+            if not IMGBB_KEY:
+                return jsonify({"error": "Missing ImgBB Key for Selenium method"}), 500
+            result = analyze_with_selenium(image_bytes, IMGBB_KEY)
         else:
             return jsonify({"error": "Invalid method specified"}), 400
             

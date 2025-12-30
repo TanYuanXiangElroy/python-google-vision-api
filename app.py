@@ -13,19 +13,20 @@ st.write("Compare different techniques for identifying objects.")
 st.sidebar.header("⚙️ Configuration")
 method = st.sidebar.radio(
     "Select Search Method:",
-    ("Google Cloud Vision API", "SerpApi (Google Lens)")
+    ("Google Cloud Vision API", "SerpApi (Google Lens)", "Selenium Scraping (Free)")
 )
 
 # Map friendly names to backend keys
 method_map = {
     "Google Cloud Vision API": "cloud_vision",
     "SerpApi (Google Lens)": "serpapi",
-
+    "Selenium Scraping (Free)": "selenium"
 }
 selected_method_key = method_map[method]
 
 st.sidebar.info(f"**Current Mode:** {method}")
-
+if selected_method_key == "selenium":
+    st.sidebar.warning("⚠️ Selenium mode is slow and may be blocked by Google.")
 
 # --- MAIN UI ---
 tab1, tab2 = st.tabs(["📸 Take Photo", "📂 Upload Image"])
@@ -40,7 +41,7 @@ with tab2:
     uploaded_image = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
     if uploaded_image:
         image_file = uploaded_image
-        st.image(image_file, caption="Uploaded Image", use_container_width=True)
+        st.image(image_file, caption="Uploaded Image", width='stretch')
 
 if image_file is not None:
     if st.button("🔍 Analyze Image", type="primary"):
@@ -83,7 +84,7 @@ if image_file is not None:
                             for idx, match in enumerate(matches):
                                 with grid_cols[idx % 3]:
                                     if match.get('thumbnail'):
-                                        st.image(match['thumbnail'], use_container_width=True)
+                                        st.image(match['thumbnail'], width='stretch')
                                     st.markdown(f"[{match.get('title', 'Link')}]({match.get('link', '#')})")
                                     st.caption(match.get('source', 'Unknown'))
                         else:
