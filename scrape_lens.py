@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 load_dotenv()
 
 IMGBB_KEY = os.environ.get("IMGBB_KEY")
-image_path = "test_pic/test_char.jpg"
+image_path = "image/test_char.jpg"
 
 if not IMGBB_KEY:
     print("Error: IMGBB_KEY not found in .env file.")
