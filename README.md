@@ -103,5 +103,3 @@ docker compose up --build
 
 - try to get websraper to work for docker
 
-- some logic error when you use both Take Photo and Upload Image tab at the same session without refresing it
-

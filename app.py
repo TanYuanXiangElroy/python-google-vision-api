@@ -31,15 +31,15 @@ if selected_method_key == "selenium":
     st.sidebar.warning("⚠️ Selenium mode is slow and may be blocked by Google.")
 
 # --- MAIN UI ---
-tab1, tab2 = st.tabs(["📸 Take Photo", "📂 Upload Image"])
+input_source = st.radio("Select Input Source:", ("📸 Take Photo", "📂 Upload Image"), horizontal=True)
 image_file = None
 
-with tab1:
+if input_source == "📸 Take Photo":
     camera_image = st.camera_input("Take a picture")
     if camera_image:
         image_file = camera_image
 
-with tab2:
+elif input_source == "📂 Upload Image":
     uploaded_image = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
     if uploaded_image:
         image_file = uploaded_image
