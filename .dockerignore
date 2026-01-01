@@ -1,0 +1,9 @@
+# .dockerignore
+__pycache__
+venv
+.git
+.env
+my-google-cloud-key.json
+test_pic
+*.jpg
+*.png

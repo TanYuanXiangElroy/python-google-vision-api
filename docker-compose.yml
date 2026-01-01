@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Service 1: The Flask API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount credentials dynamically so you don't bake secrets into the image
+      - ./my-google-cloud-key.json:/app/my-google-cloud-key.json
+      - ./.env:/app/.env
+    # This prevents the container from crashing if Chrome takes a second to start
+    restart: always
+
+  # Service 2: The Streamlit UI
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "8501:8501"
+    environment:
+      # IMPORTANT: In Docker, we talk to the service name ("backend"), not "localhost"
+      - API_URL=http://backend:5000/scan
+    depends_on:
+      - backend

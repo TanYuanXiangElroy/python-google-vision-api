@@ -1,0 +1,15 @@
+# --- Web Framework ---
+flask
+requests
+python-dotenv
+
+# --- Method 1: Google Cloud Vision ---
+google-cloud-vision
+
+# --- Method 2: SerpApi (Lens Wrapper) ---
+google-search-results
+
+# --- Method 3: Scraping ---
+beautifulsoup4
+selenium
+undetected-chromedriver

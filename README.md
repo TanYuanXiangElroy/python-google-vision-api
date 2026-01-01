@@ -35,6 +35,8 @@ When passing a Charmander plush to the official Google Cloud Vision API, the mod
 
 Result: "Stuffed Toy" (Technically true, but useless for a Pokedex).
 
+But depending on the use case it can be more helpful like if I give it selfie SperAPI guess eye glasses while Google API guess human
+
 2. The Power of Consumer API
 By letting SerpApi to scrap Google Lens for us, we gained access to Google's data in simple clean json data to use it to impliment and I realised thats why alot of people use other people API
 ![SeprAPI output](image/SerpApi output.png)
@@ -43,7 +45,10 @@ Result: Direct clear links to "Charmander Plush" listings.
 
 3. Web scraping google lens by my self
 So here is a successful picture of what it looked like to scrap I could improve it to give cleaner data but I only needed the title to try to test what the picture represents which is also what I did with SerpApi
-![len scrap output](image/Selenium Scraping output (1).png)
+![len scrap output](image/Selenium Scraping output success.png)
+
+Failed out put which is most of the time
+![lens scrap output if failed](image/Selenium Scraping output fail.png)
 
 You can see the Rrsult: "Charmander" appeared the most times. "Pokemon" appeared second most times. The identification make it pretty accurate compared to Google Cloud Vision API which only guess plush toy
 
@@ -82,9 +87,21 @@ Open a new terminal to run the UI.
 streamlit run app.py
 # Output: Local URL: http://localhost:8501
 ```
+
+## 5. Run with Docker (Recommended for Stability)
+I have dockerized the application to separate the frontend and backend dependencies. (should only be used for Google Cloud Vision API (Official) and SerpApi)
+
+```Bash
+docker compose up --build
+```
+**Note:** The "Selenium Scraping" method is highly unstable inside Docker due to Google's aggressive anti-bot detection (it detects the headless container environment). For the best results with the Selenium method, run it locally on your host machine. The API-based methods (Google Cloud, SerpApi) work perfectly in Docker.
 # Future Improvements
 
 - Better Anti-Bot measures: Google stops me from web scraping after a few attempts. I currently have to manually restart authentication or switch Wi-Fi to prove I am a human. I need to look into proxy rotation. (If you have any other suggesstion on how to web scrap better do let me know)
-- Dockerization: I want to move from a Virtual Environment (venv) to Docker to make it easier to share. (should try to do it)
+
 - Cloud Hosting: Find a way to host the scraper on the cloud instead of locally (Cloud IP addresses are blocked by Google almost instantly, which is a challenge I haven't solved yet). (So I can put it for people to try)
+
+- try to get websraper to work for docker
+
+- some logic error when you use both Take Photo and Upload Image tab at the same session without refresing it
 

@@ -1,8 +1,10 @@
+import os
 import streamlit as st
 import requests
 
-# Backend URL
-API_URL = "http://localhost:5000/scan"
+
+# Docker Backend environment variable
+API_URL = os.getenv("API_URL", "http://localhost:5000/scan")
 
 st.set_page_config(page_title="Poke-Dex Vision (Unified)", page_icon="🔍", layout="wide")
 
